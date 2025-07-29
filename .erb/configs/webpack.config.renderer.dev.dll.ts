@@ -12,17 +12,28 @@ import checkNodeEnv from '../scripts/check-node-env';
 
 checkNodeEnv('development');
 
+/** Distribution path for the DLL files */
 const dist = webpackPaths.dllPath;
 
+/**
+ * Webpack configuration for building development DLL for electron renderer process.
+ * This configuration creates a DLL bundle containing all project dependencies
+ * to improve build performance during development.
+ */
 const configuration: webpack.Configuration = {
+  /** Base context path for resolving entry points */
   context: webpackPaths.rootPath,
 
+  /** Source map type for development debugging */
   devtool: 'eval',
 
+  /** Build mode set to development */
   mode: 'development',
 
+  /** Target environment for electron renderer process */
   target: 'electron-renderer',
 
+  /** External dependencies that should not be bundled */
   externals: ['fsevents', 'crypto-browserify'],
 
   /**
@@ -30,20 +41,29 @@ const configuration: webpack.Configuration = {
    */
   module: require('./webpack.config.renderer.dev').default.module,
 
+  /** Entry point configuration using all package dependencies */
   entry: {
     renderer: Object.keys(dependencies || {}),
   },
 
+  /** Output configuration for the generated DLL files */
   output: {
+    /** Output directory path */
     path: dist,
+    /** Output filename pattern */
     filename: '[name].dev.dll.js',
+    /** Library configuration for the DLL */
     library: {
       name: 'renderer',
       type: 'var',
     },
   },
 
+  /** Webpack plugins configuration */
   plugins: [
+    /**
+     * DLL plugin to generate the DLL manifest file
+     */
     new webpack.DllPlugin({
       path: path.join(dist, '[name].json'),
       name: '[name]',
@@ -62,6 +82,9 @@ const configuration: webpack.Configuration = {
       NODE_ENV: 'development',
     }),
 
+    /**
+     * Loader options plugin for development configuration
+     */
     new webpack.LoaderOptionsPlugin({
       debug: true,
       options: {
