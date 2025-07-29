@@ -1,5 +1,9 @@
 import { IServiceProvider } from './types';
 
+/**
+ * Array of available Doubao chat models with their configurations and capabilities.
+ * Each model includes specifications like context window, pricing, and supported features.
+ */
 const chatModels = [
   {
     id: 'doubao-1.5-thinking-pro',
@@ -259,33 +263,59 @@ const chatModels = [
   },
 ];
 
+/**
+ * Doubao service provider configuration object.
+ * Defines the API settings, model options, and chat configuration for the Doubao AI service.
+ */
 export default {
+  /** Display name of the service provider */
   name: 'Doubao',
+  /** Base URL for the Doubao API */
   apiBase: 'https://api.doubao.com/v1',
+  /** Currency used for pricing */
   currency: 'CNY',
+  /** Global options for the service provider */
   options: {
+    /** Whether the API base URL can be customized */
     apiBaseCustomizable: true,
+    /** Whether the API key can be customized */
     apiKeyCustomizable: true,
   },
+  /** Chat-specific configuration */
   chat: {
+    /** Documentation for chat parameters */
     docs: {
+      /** Description of the modelId parameter */
       modelId: '接入点名称, 类似 ep-20241101123241-24smv',
+      /** Description of the temperature parameter */
       temperature:
         'Higher values will make the output more creative and unpredictable, while lower values will make it more precise.',
+      /** Description of the presencePenalty parameter */
       presencePenalty:
         "Positive values penalize new tokens based on whether they appear in the text so far, increasing the model's likelihood to talk about new topics.",
+      /** Description of the topP parameter */
       topP: 'An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with topP probability mass.',
+      /** Description of the model parameter */
       model: '用于统计用量和控制上下文长度，请选择与部署一致的模型',
     },
+    /** API schema configuration */
     apiSchema: ['base', 'key', 'proxy'],
+    /** Extra model parameters that can be configured */
     modelExtras: ['modelId'],
+    /** Frequency penalty parameter constraints */
     frequencyPenalty: { min: -2, max: 2, default: 0 },
+    /** Top-p parameter constraints */
     topP: { min: 0, max: 1, default: 0.7 },
+    /** Presence penalty parameter constraints */
     presencePenalty: { min: -2, max: 2, default: 0 },
+    /** Temperature parameter constraints */
     temperature: { min: 0, max: 1, default: 1 },
+    /** Chat-specific options */
     options: {
+      /** Whether models can be customized */
       modelCustomizable: true,
     },
+    /** Available chat models */
     models: chatModels,
   },
 } as IServiceProvider;
