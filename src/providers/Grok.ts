@@ -1,5 +1,9 @@
 import { IServiceProvider } from './types';
 
+/**
+ * Array of available Grok chat models with their configurations and capabilities.
+ * Each model includes pricing, context window limits, and supported features.
+ */
 const chatModels = [
   {
     id: 'grok-4',
@@ -122,6 +126,25 @@ const chatModels = [
   },
 ];
 
+/**
+ * Grok service provider configuration implementing the IServiceProvider interface.
+ * Defines the API endpoint, supported models, and configuration options for Grok AI services.
+ * 
+ * @property {string} name - The display name of the service provider
+ * @property {string} apiBase - The base URL for the Grok API
+ * @property {string} currency - The currency used for pricing (USD)
+ * @property {Object} options - Global configuration options for the provider
+ * @property {boolean} options.apiBaseCustomizable - Whether the API base URL can be customized
+ * @property {boolean} options.apiKeyCustomizable - Whether the API key can be customized
+ * @property {Object} chat - Chat-specific configuration and available models
+ * @property {string[]} chat.apiSchema - Required API configuration fields
+ * @property {Object} chat.presencePenalty - Presence penalty parameter constraints
+ * @property {Object} chat.topP - Top-p parameter constraints for nucleus sampling
+ * @property {Object} chat.temperature - Temperature parameter constraints for response randomness
+ * @property {Object} chat.options - Chat-specific options
+ * @property {boolean} chat.options.modelCustomizable - Whether the model can be customized
+ * @property {Array} chat.models - Array of available chat models with their configurations
+ */
 export default {
   name: 'Grok',
   apiBase: 'https://api.x.ai/v1',
