@@ -5,6 +5,13 @@ import Empty from '../../components/Empty';
 import apps from '../../apps';
 import { IAppConfig } from '../../apps/types';
 
+/**
+ * Apps page component that displays a grid of available applications.
+ * Each app is rendered as a clickable card showing its icon, name, and description.
+ * If no apps are available, displays an empty state with a work-in-progress message.
+ * 
+ * @returns {JSX.Element} The rendered apps page with header, description, and app grid
+ */
 export default function Profile() {
   const { t } = useTranslation();
   const navigate = useNav();
