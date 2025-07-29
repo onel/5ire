@@ -5,7 +5,16 @@ import { ITool } from './IChatReader';
 
 const debug = Debug('5ire:intellichat:AnthropicReader');
 
+/**
+ * Reader implementation for processing Anthropic API streaming responses.
+ * Handles parsing of Anthropic's specific message format and converts it to the standard IChatResponseMessage format.
+ */
 export default class AnthropicReader extends BaseReader {
+  /**
+   * Processes a single chunk from the Anthropic streaming response.
+   * @param chunk - Raw string chunk received from the Anthropic API stream
+   * @returns Parsed chat response message or null if processing fails
+   */
   protected processChunk(chunk: string): IChatResponseMessage | null {
     try {
       // Each chunk is a complete JSON message in Anthropic's format
@@ -16,6 +25,12 @@ export default class AnthropicReader extends BaseReader {
     }
   }
 
+  /**
+   * Parses a JSON chunk from Anthropic's streaming format into a standardized chat response message.
+   * Handles various Anthropic message types including content blocks, deltas, message events, and errors.
+   * @param chunk - JSON string containing Anthropic message data
+   * @returns Standardized chat response message with appropriate content and metadata
+   */
   protected parseReply(chunk: string): IChatResponseMessage {
     const data = JSON.parse(chunk);
     if (data.type === 'content_block_start') {
@@ -96,6 +111,11 @@ export default class AnthropicReader extends BaseReader {
     };
   }
 
+  /**
+   * Extracts tool information from a chat response message.
+   * @param respMsg - Chat response message that may contain tool calls
+   * @returns Tool object with id and name, or null if no tools are present
+   */
   protected parseTools(respMsg: IChatResponseMessage): ITool | null {
     if (respMsg.toolCalls && respMsg.toolCalls.length > 0) {
       return {
@@ -106,6 +126,11 @@ export default class AnthropicReader extends BaseReader {
     return null;
   }
 
+  /**
+   * Extracts tool arguments from a chat response message.
+   * @param respMsg - Chat response message containing tool call data
+   * @returns Object with index and args properties, or null if no tool arguments are available
+   */
   protected parseToolArgs(respMsg: IChatResponseMessage): {
     index: number;
     args: string;
