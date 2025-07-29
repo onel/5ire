@@ -1,3 +1,12 @@
+/**
+ * A React component that renders an animated SVG spinner with three moving rectangles.
+ * The spinner creates a loading animation effect with rectangles that animate their position and size.
+ * 
+ * @param props - Component props
+ * @param props.size - Optional size for the spinner width and height in pixels. Defaults to 24.
+ * @param ...rest - Additional props that will be spread to the SVG element
+ * @returns JSX element containing an animated SVG spinner
+ */
 export default function ToolSpinner(props: { size?: number } & any) {
   const { size, ...rest } = props;
   return (
