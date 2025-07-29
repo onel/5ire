@@ -31,6 +31,12 @@ const SearchIcon = bundleIcon(Search24Filled, Search24Regular);
 const OnlineIcon = bundleIcon(Wifi124Filled, Wifi124Regular);
 const OfflineIcon = bundleIcon(WifiOff24Filled, WifiOff24Regular);
 
+/**
+ * Application header component that displays navigation controls, search functionality,
+ * network status indicator, and platform-specific elements.
+ * 
+ * @returns {JSX.Element} The rendered header component
+ */
 export default function AppHeader() {
   const { isDarwin } = usePlatform();
   const collapsed = useAppearanceStore((state) => state.sidebar.collapsed);
