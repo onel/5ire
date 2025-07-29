@@ -1,5 +1,9 @@
 import { IServiceProvider } from './types';
 
+/**
+ * Array of available OpenAI chat models with their configurations and capabilities.
+ * Each model object contains pricing, context window limits, token limits, and supported features.
+ */
 const chatModels = [
   {
     id: 'o1',
@@ -255,6 +259,16 @@ const chatModels = [
   },
 ];
 
+/**
+ * OpenAI service provider configuration object that implements the IServiceProvider interface.
+ * Contains provider metadata, API configuration, and chat model definitions with their capabilities and pricing.
+ * 
+ * @property {string} name - The display name of the service provider
+ * @property {string} apiBase - The base URL for the OpenAI API
+ * @property {string} currency - The currency used for pricing (USD)
+ * @property {object} options - Configuration options for API customization
+ * @property {object} chat - Chat-specific configuration including models, parameters, and API schema
+ */
 export default {
   name: 'OpenAI',
   apiBase: 'https://api.openai.com/v1',
