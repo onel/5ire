@@ -1,5 +1,9 @@
 import { IServiceProvider } from './types';
 
+/**
+ * Array of available Mistral AI chat models with their configurations and capabilities.
+ * Each model includes pricing, context window limits, token limits, and supported features.
+ */
 const chatModels = [
   {
     id: 'codestral',
@@ -106,6 +110,13 @@ const chatModels = [
   },
 ];
 
+/**
+ * Mistral AI service provider configuration object.
+ * Defines the API endpoint, supported models, parameter ranges, and customization options
+ * for integrating with Mistral AI's chat completion services.
+ * 
+ * @type {IServiceProvider}
+ */
 export default {
   name: 'Mistral',
   apiBase: 'https://api.mistral.ai/v1',
