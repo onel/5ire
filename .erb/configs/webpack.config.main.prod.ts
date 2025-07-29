@@ -15,18 +15,27 @@ import deleteSourceMaps from '../scripts/delete-source-maps';
 checkNodeEnv('production');
 deleteSourceMaps();
 
+/**
+ * Webpack configuration object for production build of Electron main process
+ * @type {webpack.Configuration}
+ */
 const configuration: webpack.Configuration = {
+  /** Generate source maps for debugging in production */
   devtool: 'source-map',
 
+  /** Set webpack mode to production for optimizations */
   mode: 'production',
 
+  /** Target Electron main process environment */
   target: 'electron-main',
 
+  /** Entry points for main and preload scripts */
   entry: {
     main: path.join(webpackPaths.srcMainPath, 'main.ts'),
     preload: path.join(webpackPaths.srcMainPath, 'preload.ts'),
   },
 
+  /** Output configuration for bundled files */
   output: {
     path: webpackPaths.distMainPath,
     filename: '[name].js',
@@ -35,6 +44,7 @@ const configuration: webpack.Configuration = {
     },
   },
 
+  /** Optimization settings for production build */
   optimization: {
     minimizer: [
       new TerserPlugin({
@@ -43,6 +53,7 @@ const configuration: webpack.Configuration = {
     ],
   },
 
+  /** Webpack plugins for production build */
   plugins: [
     new BundleAnalyzerPlugin({
       analyzerMode: process.env.ANALYZE === 'true' ? 'server' : 'disabled',
