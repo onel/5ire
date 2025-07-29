@@ -1,3 +1,8 @@
+/**
+ * Renders the Higress logo as an SVG component.
+ * 
+ * @returns {JSX.Element} An SVG element containing the Higress logo with gradient styling
+ */
 export default function HigressLogo() {
   return (
     <svg
