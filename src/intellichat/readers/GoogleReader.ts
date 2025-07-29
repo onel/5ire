@@ -6,7 +6,16 @@ import { IReadResult, ITool } from './IChatReader';
 
 const debug = Debug('5ire:intellichat:GoogleReader');
 
+/**
+ * Reader implementation for Google's chat API responses.
+ * Extends BaseReader to handle Google-specific response parsing and streaming.
+ */
 export default class GoogleReader extends BaseReader {
+  /**
+   * Parses a JSON chunk from Google's API response into a standardized chat response message.
+   * @param chunk - Raw JSON string chunk from the API response
+   * @returns Parsed chat response message with content, token counts, and tool calls
+   */
   protected parseReply(chunk: string): IChatResponseMessage {
     const _chunk = chunk.trim();
     try {
@@ -36,6 +45,11 @@ export default class GoogleReader extends BaseReader {
     }
   }
 
+  /**
+   * Extracts tool information from a chat response message.
+   * @param respMsg - The chat response message to parse
+   * @returns Tool object with id, name, and arguments, or null if no tool calls present
+   */
   protected parseTools(respMsg: IChatResponseMessage): ITool | null {
     if (respMsg.toolCalls) {
       return {
@@ -47,6 +61,11 @@ export default class GoogleReader extends BaseReader {
     return null;
   }
 
+  /**
+   * Extracts tool arguments with index from a chat response message.
+   * @param respMsg - The chat response message to parse
+   * @returns Object containing index and arguments string, or null if no tool calls present
+   */
   protected parseToolArgs(respMsg: IChatResponseMessage): {
     index: number;
     args: string;
@@ -60,6 +79,15 @@ export default class GoogleReader extends BaseReader {
     return null;
   }
 
+  /**
+   * Reads and processes streaming data from Google's API, parsing JSON chunks and handling tool calls.
+   * Accumulates data in a buffer to handle incomplete JSON objects across multiple chunks.
+   * @param options - Configuration object with callback functions
+   * @param options.onError - Callback function called when an error occurs
+   * @param options.onProgress - Callback function called with each content chunk
+   * @param options.onToolCalls - Callback function called when tool calls are detected
+   * @returns Promise resolving to the complete read result with content, tools, and token counts
+   */
   public async read({
     onError,
     onProgress,
