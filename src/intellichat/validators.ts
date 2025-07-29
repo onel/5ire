@@ -3,6 +3,14 @@ import { isNull, isNumber } from 'lodash';
 import { isBlank } from 'utils/validators';
 import { DEFAULT_MAX_TOKENS } from '../consts';
 
+/**
+ * Validates if the provided max tokens value is valid for the specified provider and model.
+ * 
+ * @param {number | null | undefined} maxTokens - The maximum number of tokens to validate
+ * @param {string} providerName - The name of the AI provider
+ * @param {string} modelName - The name of the AI model
+ * @returns {boolean} True if the max tokens value is valid, false otherwise
+ */
 export function isValidMaxTokens(
   maxTokens: number | null | undefined,
   providerName: string,
@@ -18,6 +26,13 @@ export function isValidMaxTokens(
   return maxTokens <= (model.maxTokens || DEFAULT_MAX_TOKENS);
 }
 
+/**
+ * Validates if the provided temperature value is within the acceptable range for the specified provider.
+ * 
+ * @param {number | null | undefined} temperature - The temperature value to validate
+ * @param {string} providerName - The name of the AI provider
+ * @returns {boolean} True if the temperature value is valid, false otherwise
+ */
 export function isValidTemperature(
   temperature: number | null | undefined,
   providerName: string,
