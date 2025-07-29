@@ -1,5 +1,9 @@
 import { IServiceProvider } from './types';
 
+/**
+ * Array of available chat models for the 5ire AI service provider.
+ * Each model contains configuration details including pricing, capabilities, and limits.
+ */
 const chatModels = [
   {
     id: 'o4-mini',
@@ -194,6 +198,12 @@ const chatModels = [
   },
 ];
 
+/**
+ * Service provider configuration for 5ire AI service.
+ * Defines the API endpoint, pricing currency, premium status, and available chat models.
+ * 
+ * @type {IServiceProvider}
+ */
 export default {
   name: '5ire',
   apiBase: 'https://openai.5ireai.com/v1',
