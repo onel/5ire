@@ -1,5 +1,12 @@
 import { IMCPConfig } from './types/mcp';
 
+/**
+ * Default MCP (Model Context Protocol) server configuration.
+ * Contains predefined server configurations for various services and tools
+ * that can be used with MCP-compatible applications.
+ * 
+ * @type {IMCPConfig}
+ */
 export default {
   servers: [
     {
