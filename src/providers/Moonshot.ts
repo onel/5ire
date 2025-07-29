@@ -1,5 +1,9 @@
 import { IServiceProvider } from './types';
 
+/**
+ * Array of available chat models for the Moonshot service provider.
+ * Each model configuration includes pricing, capabilities, and technical specifications.
+ */
 const chatModels = [
   {
     id: 'moonshot-v1-8k',
@@ -43,6 +47,13 @@ const chatModels = [
   },
 ];
 
+/**
+ * Moonshot service provider configuration object.
+ * Defines the API endpoints, pricing currency, customization options,
+ * and chat model configurations for the Moonshot AI service.
+ * 
+ * @type {IServiceProvider}
+ */
 export default {
   name: 'Moonshot',
   apiBase: 'https://api.moonshot.com/v1',
