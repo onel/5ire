@@ -18,6 +18,11 @@ import deleteSourceMaps from '../scripts/delete-source-maps';
 checkNodeEnv('production');
 deleteSourceMaps();
 
+/**
+ * Webpack configuration for the Electron renderer process in production mode.
+ * This configuration handles the bundling of the renderer process with optimizations
+ * for production builds including minification, CSS extraction, and asset handling.
+ */
 const configuration: webpack.Configuration = {
   devtool: 'source-map',
 
