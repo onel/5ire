@@ -1,3 +1,9 @@
+/**
+ * Webpack configuration for Electron preload script in development mode.
+ * This configuration sets up the build process for the preload script that runs
+ * in the renderer process with Node.js access in Electron applications.
+ */
+
 import path from 'path';
 import webpack from 'webpack';
 import { merge } from 'webpack-merge';
@@ -12,6 +18,10 @@ if (process.env.NODE_ENV === 'production') {
   checkNodeEnv('development');
 }
 
+/**
+ * Webpack configuration object for the preload script development build.
+ * Configures source maps, development mode, and Electron-specific settings.
+ */
 const configuration: webpack.Configuration = {
   devtool: 'inline-source-map',
 
