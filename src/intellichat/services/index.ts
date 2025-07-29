@@ -18,6 +18,14 @@ import PerplexityChatService from './PerplexityChatService';
 
 const debug = Debug('5ire:intellichat:ChatService');
 
+/**
+ * Creates a chat service instance based on the provider specified in the chat context.
+ * This factory function instantiates the appropriate chat service implementation
+ * according to the provider name and returns it as an INextChatService interface.
+ * 
+ * @param {IChatContext} chatCtx - The chat context containing provider information and configuration
+ * @returns {INextChatService} The instantiated chat service for the specified provider
+ */
 export default function createService(chatCtx: IChatContext): INextChatService {
   const provider = chatCtx.getProvider();
   debug('CreateService', provider.name);
