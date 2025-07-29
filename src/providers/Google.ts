@@ -1,5 +1,9 @@
 import { IServiceProvider } from './types';
 
+/**
+ * Array of available Google Gemini chat models with their configurations.
+ * Each model includes pricing, capabilities, context windows, and other specifications.
+ */
 const chatModels = [
   {
     id: 'gemini-2.5-pro-exp',
@@ -165,6 +169,26 @@ const chatModels = [
   },
 ];
 
+/**
+ * Google service provider configuration implementing the IServiceProvider interface.
+ * Provides access to Google's Gemini models through the Generative Language API.
+ * 
+ * @property {string} name - Display name of the service provider
+ * @property {string} apiBase - Base URL for the Google Generative Language API
+ * @property {string} currency - Currency used for pricing (USD)
+ * @property {Object} options - Provider-level configuration options
+ * @property {boolean} options.apiBaseCustomizable - Whether the API base URL can be customized
+ * @property {boolean} options.apiKeyCustomizable - Whether the API key can be customized
+ * @property {Object} chat - Chat-specific configuration
+ * @property {string[]} chat.apiSchema - Required API configuration fields
+ * @property {Object} chat.presencePenalty - Presence penalty parameter configuration
+ * @property {Object} chat.topP - Top-p parameter configuration for nucleus sampling
+ * @property {Object} chat.temperature - Temperature parameter configuration for response randomness
+ * @property {Object} chat.options - Chat-specific options
+ * @property {boolean} chat.options.modelCustomizable - Whether the model can be customized
+ * @property {boolean} chat.options.streamCustomizable - Whether streaming can be customized
+ * @property {Array} chat.models - Array of available chat models
+ */
 export default {
   name: 'Google',
   apiBase: 'https://generativelanguage.googleapis.com',
