@@ -23,6 +23,16 @@ import useMarkdown from 'hooks/useMarkdown';
 import { IMCPServer } from 'types/mcp';
 import { captureException } from 'renderer/logging';
 
+/**
+ * A dialog component that displays detailed information about tools available on an MCP server.
+ * Shows an accordion list of tools with their descriptions and input schemas.
+ * 
+ * @param options - Configuration object for the dialog
+ * @param options.server - The MCP server to display tools for, or null if no server is selected
+ * @param options.open - Whether the dialog is currently open
+ * @param options.setOpen - Function to control the dialog's open/closed state
+ * @returns JSX element representing the tool detail dialog
+ */
 export default function ToolDetailDialog(options: {
   server: IMCPServer | null;
   open: boolean;
@@ -32,6 +42,12 @@ export default function ToolDetailDialog(options: {
   const { t } = useTranslation();
   const [tools, setTools] = useState<any[]>([]);
   const { render } = useMarkdown();
+  
+  /**
+   * Effect hook that manages dialog lifecycle and tool loading.
+   * Sets up keyboard shortcuts, fetches tools from the server when dialog opens,
+   * and cleans up event listeners when dialog closes.
+   */
   useEffect(() => {
     if (open) {
       Mousetrap.bind('esc', () => setOpen(false));
