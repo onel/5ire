@@ -21,9 +21,24 @@ import useAuthStore from 'stores/useAuthStore';
 import TabPassword from './TabPassword';
 import TabSubscription from './TabSubscription';
 
+/**
+ * Memoized version of TabPassword component to prevent unnecessary re-renders
+ */
 const MemorizedTabPassword = memo(TabPassword);
+
+/**
+ * Memoized version of TabSubscription component to prevent unnecessary re-renders
+ */
 const MemorizedTabSubscription = memo(TabSubscription);
 
+/**
+ * Account page component that displays user account information and settings
+ * Provides tabbed interface for managing subscription and password settings
+ * Shows user profile information including avatar, name, and email with verification status
+ * Displays warning message for unconfirmed accounts
+ * 
+ * @returns {JSX.Element} The rendered account page component
+ */
 export default function Account() {
   const { t } = useTranslation();
   const user = useAuthStore((state) => state.user);
@@ -31,6 +46,12 @@ export default function Account() {
 
   const [tab, setTab] = useState('subscription');
 
+  /**
+   * Handles tab selection events and updates the active tab state
+   * 
+   * @param {SelectTabEvent} _ - The tab selection event (unused)
+   * @param {any} tabItem - The selected tab item containing the value
+   */
   const onTabSelect = (_: SelectTabEvent, tabItem: any) => {
     setTab(tabItem.value);
   };
