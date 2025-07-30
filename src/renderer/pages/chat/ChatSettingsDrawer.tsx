@@ -25,6 +25,15 @@ import { isPersistedChat } from 'utils/util';
 
 const debug = Debug('5ire:pages:chat:ChatSettingsDrawer');
 
+/**
+ * A drawer component that provides chat settings interface including search functionality
+ * and system message editing capabilities.
+ * 
+ * @param props - The component props
+ * @param props.open - Whether the drawer is currently open
+ * @param props.setOpen - Function to control the drawer's open/closed state
+ * @returns The chat settings drawer component
+ */
 export default function ChatSettingsDrawer({
   open,
   setOpen,
@@ -51,6 +60,12 @@ export default function ChatSettingsDrawer({
 
   const editStage = useChatStore((state) => state.editStage);
 
+  /**
+   * Handles keyboard events for the search input field.
+   * Closes the drawer when Enter key is pressed without Shift modifier.
+   * 
+   * @param event - The keyboard event from the search input
+   */
   const onSearchKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (!event.shiftKey && event.key === 'Enter') {
       event.preventDefault();
@@ -58,11 +73,21 @@ export default function ChatSettingsDrawer({
     }
   };
 
+  /**
+   * Handles changes to the system message textarea.
+   * Updates local state and triggers debounced save operation.
+   * 
+   * @param ev - The change event from the textarea
+   */
   const onSystemMessageChange = (ev: ChangeEvent<HTMLTextAreaElement>) => {
     setSystemMessage(ev.target.value);
     updateSystemMessage(ev);
   };
 
+  /**
+   * Debounced function that saves system message changes to the store.
+   * Waits 1 second after the last change before saving.
+   */
   const updateSystemMessage = useMemo(
     () =>
       debounce(async (ev: ChangeEvent<HTMLTextAreaElement>) => {
