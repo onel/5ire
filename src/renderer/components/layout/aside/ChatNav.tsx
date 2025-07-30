@@ -10,6 +10,14 @@ import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 import ChatItem from 'renderer/components/ChatItem';
 import { Skeleton, SkeletonItem } from '@fluentui/react-components';
 
+/**
+ * Chat navigation component that displays a list of chats with folder organization,
+ * keyboard shortcuts, and drag-and-drop functionality.
+ * 
+ * @param {Object} props - Component props
+ * @param {boolean} props.collapsed - Whether the navigation is in collapsed state
+ * @returns {JSX.Element} The chat navigation interface
+ */
 export default function ChatNav({ collapsed }: { collapsed: boolean }) {
   const [loading, setLoading] = useState(true);
   const chats = useChatStore((state) => state.chats);
@@ -27,6 +35,10 @@ export default function ChatNav({ collapsed }: { collapsed: boolean }) {
     [chats],
   );
 
+  /**
+   * Loads chat data including folders and chats from the store.
+   * Sets loading state during the fetch operation.
+   */
   const loadData = async () => {
     setLoading(true);
     await Promise.all([fetchFolder(), fetchChats()]);
@@ -70,6 +82,12 @@ export default function ChatNav({ collapsed }: { collapsed: boolean }) {
     loadData();
   }, []);
 
+  /**
+   * Handles the end of a drag operation for chat items.
+   * Navigates to the dragged chat and updates its folder assignment.
+   * 
+   * @param {any} event - The drag end event containing active and over elements
+   */
   const handleDragEnd = (event: any) => {
     const { active, over } = event;
     navigate(`/chats/${active.id}`);

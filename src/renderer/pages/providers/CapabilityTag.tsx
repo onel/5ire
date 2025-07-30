@@ -3,6 +3,15 @@ import { IChatModelConfig } from 'providers/types';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
+/**
+ * A React component that renders a capability tag for chat models.
+ * Displays different capabilities (json, tools, vision) with appropriate styling and visual indicators.
+ * 
+ * @param props - Component props
+ * @param props.model - The chat model configuration containing capabilities information
+ * @param props.capability - The specific capability to display ('json' | 'tools' | 'vision')
+ * @returns JSX element representing the capability tag, or null if the capability is not supported
+ */
 export default function CapabilityTag(
   props: {
     model: IChatModelConfig;
@@ -11,6 +20,10 @@ export default function CapabilityTag(
 ) {
   const { model, capability: capabilityName } = props;
 
+  /**
+   * Retrieves the capability configuration from the model.
+   * Returns the capability object if it exists, otherwise null.
+   */
   const capability = useMemo(() => {
     return (
       model.capabilities[capabilityName as keyof typeof model.capabilities] ||
@@ -18,17 +31,29 @@ export default function CapabilityTag(
     );
   }, [model]);
 
+  /**
+   * Determines if the model originally supports this capability.
+   * Returns true if the capability exists in the model configuration.
+   */
   const originalSupport = useMemo(() => {
     if (isNil(capability)) return false;
     return true;
   }, [capability]);
 
+  /**
+   * Determines if the capability is currently enabled.
+   * Returns true if the capability is enabled, false otherwise.
+   */
   const actualSupport = useMemo(() => {
     return capability?.enabled || false;
   }, [capability]);
 
   const { t } = useTranslation();
 
+  /**
+   * Computes the CSS classes for the tag background and text colors.
+   * Returns different color schemes based on the capability type.
+   */
   const tagColorCls = useMemo<string>(() => {
     return (
       {
@@ -41,6 +66,10 @@ export default function CapabilityTag(
     )[capabilityName];
   }, [capabilityName]);
 
+  /**
+   * Computes the CSS classes for the status indicator dot colors.
+   * Returns different dot colors based on the capability type.
+   */
   const dotColorCls = useMemo<string>(() => {
     return (
       {
