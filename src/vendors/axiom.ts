@@ -4,6 +4,11 @@ import { captureException } from '../main/logging';
 
 let axiom: any = null;
 
+/**
+ * Gets or creates a singleton instance of the Axiom client.
+ * Initializes the client with environment variables AXIOM_TOKEN and AXIOM_ORG_ID.
+ * @returns {any} The Axiom client instance or null if initialization fails
+ */
 function getAxiom() {
   if (!axiom) {
     try {
@@ -18,7 +23,14 @@ function getAxiom() {
   return axiom;
 }
 
+/**
+ * Axiom service wrapper providing data ingestion and flushing capabilities
+ */
 export default {
+  /**
+   * Ingests data into the '5ire' dataset in Axiom.
+   * @param {Array<{[key: string]: any}>} data - Array of objects to ingest
+   */
   ingest(data: { [key: string]: any }[]) {
     try {
       const axiom = getAxiom();
@@ -27,6 +39,10 @@ export default {
       captureException(err);
     }
   },
+  /**
+   * Flushes any pending data to Axiom.
+   * @returns {Promise<void>} Promise that resolves when flush is complete
+   */
   async flush() {
     try {
       const axiom = getAxiom();
