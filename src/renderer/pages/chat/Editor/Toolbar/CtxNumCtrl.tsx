@@ -27,6 +27,16 @@ import { MIN_CTX_MESSAGES, MAX_CTX_MESSAGES, NUM_CTX_MESSAGES } from 'consts';
 
 const AttacheTextIcon = bundleIcon(AttachText20Filled, AttachText20Regular);
 
+/**
+ * A control component that allows users to adjust the maximum number of context messages
+ * for a chat through a popover interface with a slider.
+ * 
+ * @param props - The component props
+ * @param props.ctx - The chat context object
+ * @param props.chat - The chat object containing chat configuration
+ * @param props.disabled - Whether the control should be disabled
+ * @returns A React component that renders a button with a popover containing a slider
+ */
 export default function CtxNumCtrl({
   ctx,
   chat,
@@ -41,9 +51,22 @@ export default function CtxNumCtrl({
   const editStage = useChatStore((state) => state.editStage);
   const [ctxMessages, setCtxMessages] = useState<number>(NUM_CTX_MESSAGES);
 
+  /**
+   * Handles the open/close state change of the popover.
+   * 
+   * @param e - The event object
+   * @param data - The popover data containing the open state
+   */
   const handleOpenChange: PopoverProps['onOpenChange'] = (e, data) =>
     setOpen(data.open || false);
 
+  /**
+   * Updates the maximum context messages value when the slider changes.
+   * Saves the new value to the chat store and sends an event to the electron process.
+   * 
+   * @param ev - The input change event
+   * @param data - The slider change data containing the new value
+   */
   const updateCtxMessages = async (
     ev: ChangeEvent<HTMLInputElement>,
     data: SliderOnChangeData,

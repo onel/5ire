@@ -1,5 +1,9 @@
 import { IServiceProvider } from './types';
 
+/**
+ * Array of available chat models for the DeepSeek service provider.
+ * Each model defines its capabilities, pricing, and configuration parameters.
+ */
 const chatModels = [
   {
     id: 'deepseek-chat',
@@ -33,6 +37,17 @@ const chatModels = [
   },
 ];
 
+/**
+ * DeepSeek service provider configuration object.
+ * Defines the API endpoints, pricing currency, customization options,
+ * and chat model configurations for the DeepSeek AI service.
+ * 
+ * @property {string} name - The display name of the service provider
+ * @property {string} apiBase - The base URL for the DeepSeek API
+ * @property {string} currency - The currency used for pricing (Chinese Yuan)
+ * @property {Object} options - Global customization options for the provider
+ * @property {Object} chat - Chat-specific configuration including models and parameters
+ */
 export default {
   name: 'DeepSeek',
   apiBase: 'https://api.deepseek.com/v1',
