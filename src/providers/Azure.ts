@@ -1,5 +1,9 @@
 import { IServiceProvider } from './types';
 
+/**
+ * Array of available chat models for Azure OpenAI service.
+ * Each model object contains configuration details including pricing, capabilities, and limits.
+ */
 const chatModels = [
   {
     id: 'o1',
@@ -261,6 +265,17 @@ const chatModels = [
   },
 ];
 
+/**
+ * Azure OpenAI service provider configuration.
+ * Defines the service settings, API configuration, and available chat models for Azure OpenAI integration.
+ * 
+ * @property {string} name - The display name of the service provider
+ * @property {string} apiBase - Base URL for the API (empty string indicates customizable)
+ * @property {string} apiVersion - API version to use for requests
+ * @property {string} currency - Currency used for pricing information
+ * @property {Object} options - Global configuration options for the provider
+ * @property {Object} chat - Chat-specific configuration including models and API settings
+ */
 export default {
   name: 'Azure',
   apiBase: '',
