@@ -1,5 +1,6 @@
 /**
- * Sidebar
+ * Application sidebar component that provides navigation and adapts to different platforms and states.
+ * Renders different navigation components based on the current route and handles responsive behavior.
  */
 import usePlatform from 'hooks/usePlatform';
 import { useLocation } from 'react-router-dom';
@@ -12,6 +13,13 @@ import Footer from './Footer';
 import './AppSidebar.scss';
 import BookmarkNav from './BookmarkNav';
 
+/**
+ * Main sidebar component that renders the application's navigation sidebar.
+ * Adapts its appearance based on platform (Darwin/Linux), route, and sidebar state (hidden/collapsed).
+ * Conditionally renders different navigation components based on the active route.
+ * 
+ * @returns {JSX.Element} The rendered sidebar component with appropriate navigation and styling
+ */
 export default function Sidebar() {
   const location = useLocation();
   const { isDarwin, isLinux } = usePlatform();
@@ -20,6 +28,11 @@ export default function Sidebar() {
   const left = sidebar.hidden ? 'md:left-0' : '-left-64 md:left-0';
   const leftCollapsed = sidebar.hidden ? '-left-64' : '-left-64 md:left-0';
 
+  /**
+   * Determines which navigation component to render based on the current route.
+   * 
+   * @returns {JSX.Element} The appropriate navigation component for the active route
+   */
   const renderNav = () => {
     const activeRoute = location.pathname.split('/')[1];
     switch (activeRoute) {
