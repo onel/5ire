@@ -1,3 +1,8 @@
+/**
+ * Renders the Composio logo as an SVG element.
+ * 
+ * @returns {JSX.Element} An SVG element containing the Composio logo with gradients and styling
+ */
 export default function ComposioLogo() {
   return (
     <svg
