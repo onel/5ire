@@ -8,23 +8,23 @@ Technical architecture documentation for 5ire, an Electron-based AI assistant wi
 
 ### Process Model
 
-**Main Process (Node.js)**
+#### Main Process (Node.js)
 - Manages application lifecycle and native system APIs
 - Handles file I/O, SQLite database operations, and document processing
 - Runs MCP servers and manages their lifecycle
-- Executes the embedding model for the knowledge base
-- Processes IPC requests from the renderer
+- Executes Python-based embedding model for knowledge base
+- Processes IPC requests from renderer
 
-**Renderer Process (Chromium + React)**
+#### Renderer Process (Chromium + React)
 - Runs the React/TypeScript UI application
 - Manages application state with Zustand stores
-- Communicates with the main process via IPC bridge
+- Communicates with main process via IPC bridge
 - Handles user interactions and real-time streaming responses
 
-**Preload Scripts**
+#### Preload Scripts
 - Secure bridge between main and renderer processes
-- Exposes controlled IPC channels to the renderer
-- Prevents direct Node.js access from the renderer for security
+- Exposes controlled IPC channels to renderer
+- Prevents direct Node.js access from renderer for security
 
 ### Application Layers
 
@@ -63,6 +63,7 @@ Technical architecture documentation for 5ire, an Electron-based AI assistant wi
 - **Electron** for cross-platform desktop capabilities
 - **Node.js** runtime environment
 - **SQLite** (better-sqlite3) for local data persistence
+- **Python** integration via child processes for ML models
 
 ### Key Dependencies
 - `@modelcontextprotocol/sdk` - MCP protocol implementation
@@ -102,7 +103,7 @@ src/
 
 The chat system uses an abstract service pattern to support multiple AI providers through a unified interface.
 
-**IChatService Interface**
+#### IChatService Interface
 ```typescript
 interface IChatService {
   context: IChatContext;
@@ -121,10 +122,10 @@ Each provider (OpenAI, Anthropic, Google, etc.) implements this interface with p
 - Error management
 - Token counting
 
-**Chat Readers**
+#### Chat Readers
 Stream readers parse provider-specific response formats (SSE, JSON streams) and normalize them into a consistent message format for the UI.
 
-**Context Management**
+#### Context Management
 - System prompts define AI behavior
 - Conversation history maintains context
 - Knowledge base integration injects relevant documents
@@ -134,18 +135,18 @@ Stream readers parse provider-specific response formats (SSE, JSON streams) and 
 
 The Model Context Protocol (MCP) enables standardized tool integration.
 
-**MCP Client (`src/main/mcp.ts`)**
+#### MCP Client (`src/main/mcp.ts`)
 - Manages connections to multiple MCP servers
 - Supports both local (stdio) and remote (HTTP/SSE) servers
 - Handles server lifecycle (activation, deactivation, reconnection)
 - Implements timeout and retry logic for reliability
 
-**Transport Types**
+#### Transport Types
 - `StdioClientTransport` - Local servers via stdin/stdout
 - `SSEClientTransport` - Remote servers via Server-Sent Events
 - `StreamableHTTPClientTransport` - Remote servers via HTTP streaming
 
-**Tool Discovery and Execution**
+#### Tool Discovery and Execution
 1. Client connects to MCP server on activation
 2. Server capabilities are queried (tools, prompts, resources)
 3. Tools are listed and made available to AI models
@@ -153,7 +154,7 @@ The Model Context Protocol (MCP) enables standardized tool integration.
 5. Tool calls are validated against approval policy
 6. Results are returned to AI for continued processing
 
-**Configuration**
+#### Configuration
 MCP servers are configured in `mcp.json` with:
 - Command and arguments for local servers
 - URL and headers for remote servers
@@ -164,27 +165,27 @@ MCP servers are configured in `mcp.json` with:
 
 The knowledge base implements Retrieval-Augmented Generation using local embeddings.
 
-**Document Processing Pipeline**
+#### Document Processing Pipeline
 1. User selects documents (docx, xlsx, pptx, pdf, txt, csv)
 2. Documents are parsed into text chunks
 3. Chunks are embedded using local bge-m3 model
 4. Embeddings are stored in SQLite with metadata
 5. Documents are organized into collections
 
-**Embedding Service (`src/main/embedder.ts`)**
-- Runs local bge-m3 model via node subprocess
+#### Embedding Service (`src/main/embedder.ts`)
+- Runs local bge-m3 model via Python subprocess
 - Supports multilingual text (90+ languages)
 - Generates 1024-dimensional embeddings
 - Processes documents in batches for efficiency
 
-**Retrieval Process**
+#### Retrieval Process
 1. User message is embedded using same model
 2. Vector similarity search finds relevant chunks
 3. Top-k chunks are retrieved with metadata
 4. Context is injected into chat prompt
 5. AI generates response with retrieved knowledge
 
-**Storage**
+#### Storage
 - Document metadata in SQLite
 - Embeddings stored as binary blobs
 - Collections organize related documents
@@ -194,21 +195,21 @@ The knowledge base implements Retrieval-Augmented Generation using local embeddi
 
 The provider system abstracts differences between AI providers.
 
-**Provider Configuration**
+#### Provider Configuration
 Each provider defines:
 - API endpoints and authentication
 - Supported models and capabilities
 - Request/response formats
 - Token limits and pricing
 
-**Capability Detection**
+#### Capability Detection
 - Vision support (image inputs)
 - Tool calling (function execution)
 - Streaming responses
 - JSON mode
 - System prompts
 
-**Model Management**
+#### Model Management
 - Users configure API keys per provider
 - Models are selected per conversation
 - Settings include temperature, max tokens, etc.
@@ -248,9 +249,9 @@ Update Usage Statistics
 ```
 User Message
     ↓
-Check if knowledge is enabled
+Check if knowledge enabled
     ↓
-Embed message (Node subprocess)
+Embed message (Python subprocess)
     ↓
 Vector similarity search (SQLite)
     ↓
@@ -307,7 +308,7 @@ Optional Supabase integration provides:
 - User account management
 - Settings backup across devices
 - OAuth authentication flow
-- Offline-first design (works without an account)
+- Offline-first design (works without account)
 
 ### Analytics
 
@@ -331,16 +332,16 @@ Electron-store persists user preferences:
 ### Why Electron?
 - Cross-platform desktop application (Windows, macOS, Linux)
 - Access to native APIs (file system, system info)
-- Ability to run local models for embeddings
+- Ability to run local Python models for embeddings
 - Rich UI with web technologies
 - Offline-capable with local data storage
 
 ### Why Local Embeddings?
 - **Privacy**: Documents never leave the device
-- **Offline**: No internet required for the knowledge base
+- **Offline**: No internet required for knowledge base
 - **Cost**: No API fees for embeddings
 - **Multilingual**: bge-m3 supports 90+ languages
-- **Control**: Full control over the embedding process
+- **Control**: Full control over embedding process
 
 ### Why MCP?
 - **Standardization**: Open protocol for tool integration
